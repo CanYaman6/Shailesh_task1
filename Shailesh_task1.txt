@@ -1,0 +1,127 @@
+1.Install Nmap from official website.
+
+2.Find your local IP range (e.g., 192.168.1.0/24).
+192.168.0.0/24
+
+3.Run: nmap -sS 192.168.1.0/24 to perform TCP SYN scan
+nmap -sS 192.168.0.0/24
+
+┌──(root㉿kali)-[/home/kali]
+└─# ifconfig
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.0.104  netmask 255.255.255.0  broadcast 192.168.0.255
+        inet6 fe80::d7a4:e22a:351e:6443  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:21:b1:d0  txqueuelen 1000  (Ethernet)
+        RX packets 208  bytes 18400 (17.9 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 26  bytes 5662 (5.5 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 4  bytes 240 (240.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 4  bytes 240 (240.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+                                                                             
+┌──(root㉿kali)-[/home/kali]
+└─# nmap -sS 192.168.0.0/24      
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-06-23 11:54 EDT
+Nmap scan report for routerlogin.net (192.168.0.1)
+Host is up (0.30s latency).
+Not shown: 996 closed tcp ports (reset)
+PORT     STATE SERVICE
+53/tcp   open  domain
+80/tcp   open  http
+445/tcp  open  microsoft-ds
+5000/tcp open  upnp
+MAC Address: C8:9E:43:31:FD:EA (Netgear)
+
+Nmap scan report for 192.168.0.22
+Host is up (0.0022s latency).
+Not shown: 956 filtered tcp ports (no-response), 42 closed tcp ports (reset)
+PORT     STATE SERVICE
+1080/tcp open  socks
+8888/tcp open  sun-answerbook
+MAC Address: 90:A8:22:67:D5:26 (Amazon Technologies)
+
+Nmap scan report for 192.168.0.39
+Host is up (0.00036s latency).
+Not shown: 999 filtered tcp ports (no-response)
+PORT     STATE SERVICE
+7070/tcp open  realserver
+MAC Address: B4:0E:DE:49:B8:35 (Intel Corporate)
+
+Nmap scan report for 192.168.0.47
+Host is up (0.0062s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT      STATE SERVICE
+49152/tcp open  unknown
+62078/tcp open  iphone-sync
+MAC Address: FE:0D:3A:9C:1F:34 (Unknown)
+
+Nmap scan report for readyshare.routerlogin.net (192.168.0.254)
+Host is up (0.0023s latency).
+Not shown: 994 closed tcp ports (reset)
+PORT      STATE SERVICE
+80/tcp    open  http
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+514/tcp   open  shell
+8200/tcp  open  trivnet1
+20005/tcp open  btx
+MAC Address: 28:C6:8E:00:00:01 (Netgear)
+
+Nmap scan report for 192.168.0.104
+Host is up (0.0000060s latency).
+All 1000 scanned ports on 192.168.0.104 are in ignored states.
+Not shown: 1000 closed tcp ports (reset)
+
+Nmap done: 256 IP addresses (6 hosts up) scanned in 10.22 seconds
+
+
+4. Note down IP addresses and open ports found.
+192.168.0.1 - open ports are 53/tcp, 80/tcp, 445/tcp, 5000/tcp
+192.168.0.22 - open ports are 1080/tcp, 8888/tcp
+192.168.0.39 - open ports are 7070/tcp
+192.168.0.47 - open ports are 49152/tcp, 62078/tcp
+192.168.0.254 - open ports are 80/tcp, 139/tcp, 445/tcp, 514/tcp, 8200/tcp, 20005/tcp
+192.168.0.104 - no open ports
+
+5. Optionally analyze packet capture with Wireshark
+As its optional, I didn't do this step.
+
+6. Research common services running on those ports.
+Common services are:
+53 - domain
+80 - http
+445 - microsoft-ds
+5000 - upnp
+1080 - socks
+8888 - sun-answerbook
+7070 - realserver
+49152 - unknown
+62078 - iphone-sync
+139 - netbios-ssn
+514 - shell
+8200 - trivnet1
+20005 - btx
+
+7. Identify potential security risks from open ports.
+
+53 (DNS): Can be exploited for DNS amplification attacks or unauthorized zone transfers.
+80 (HTTP): Vulnerable to web-based attacks like SQL injection, XSS, or DDoS.
+445 (Microsoft-DS): Susceptible to SMB exploits, ransomware, or unauthorized file sharing.
+5000 (UPnP): Risks include unauthorized device control or network configuration changes.
+1080 (SOCKS): Potential for proxy abuse or bypassing network restrictions.
+8888 (Sun-Answerbook): Legacy service prone to remote code execution or privilege escalation.
+7070 (RealServer): May allow unauthorized streaming or remote access vulnerabilities.
+49152 (Unknown): Non-standard port could indicate malware or unauthorized services.
+62078 (iPhone-Sync): Risks unauthorized device access or data syncing exploits.
+139 (NetBIOS-SSN): Vulnerable to SMB attacks, unauthorized access, or data leakage.
+514 (Shell): Unsecured remote shell access could lead to system compromise.
+8200 (Trivnet1): Obscure service, potential for backdoors or unpatched vulnerabilities.
+20005 (BTX): Non-standard, may indicate malware or unauthorized remote access.
